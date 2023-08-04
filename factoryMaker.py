@@ -9,7 +9,6 @@ class factoryMaker:
         self.threedFactory = threedFactory
 
     _instance = None
-
     @staticmethod
     def get_instance():
         if factoryMaker._instance is None:

@@ -10,34 +10,43 @@ temp = []
 
 class system:
 
+    # private variables
+    __factory = None
+    __shape = None
+    __shapes = None
+    __sizeBeforeModi = None
+    __tempId = None
+    __factoryMaker = None
+
+
     def __init__(self, factory=None, shape=None):
-        self.factory = factory
-        self.shape = shape
-        self.shapes = shapesBefore
-        self.sizeBeforeModi = None
-        self.tempId = None
-        self.factoryMaker = factoryMaker
+        self.__factory = factory
+        self.__shape = shape
+        self.__shapes = shapesBefore
+        self.__sizeBeforeModi = None
+        self.__tempId = None
+        self.__factoryMaker = factoryMaker
 
     def __getitem__(self, index):
-        return self.shapes[index]
+        return self.__shapes[index]
 
     def setFactory(self, type):
-        self.factory = self.factoryMaker.get_instance().getFactory(type)
+        self.__factory = self.__factoryMaker.get_instance().getFactory(type)
 
     def setRectangleShape(self):
-        self.shape = self.factory.get_instance().getShape("Rectangle")
+        self.__shape = self.__factory.get_instance().getShape("Rectangle")
 
     def setCircleShape(self):
-        self.shape = self.factory.get_instance().getShape("Circle")
+        self.__shape = self.__factory.get_instance().getShape("Circle")
 
     def setSize(self, size):
         id = random.randint(1, 50)
-        self.shape.setSize(size, id)
-        shapesBefore.append((id, self.shape, size))
+        self.__shape.setSize(size, id)
+        shapesBefore.append((id, self.__shape, size))
         shapesAfter.append((shapesBefore[-1], "add"))
 
     def showInfor(self):
-        for index in range(0, len(self.shapes)):
+        for index in range(0, len(self.__shapes)):
             self.__getitem__(index)[1].showInfor()
 
     def deleteShape(self, id):
@@ -53,7 +62,7 @@ class system:
 
     def findShapeType(self, id):
         type = 0
-        self.tempId = id
+        self.__tempId = id
         for pair in shapesBefore:
             if pair[0] == id:
                 if pair[1].identifyShapeByName() == "2d circle":
@@ -64,14 +73,14 @@ class system:
                     type = shapeType['rectangle3d'].value
                 elif pair[1].identifyShapeByName() == "3d circle":
                     type = shapeType['circle3d'].value
-                self.sizeBeforeModi = pair[2]
+                self.__sizeBeforeModi = pair[2]
         return type
 
     def modifyShape(self, sizeAfterModi):
         for pair in shapesBefore:
-            if pair[0] == self.tempId:
-                pair[1].setSize(sizeAfterModi, self.tempId)
-        shapesAfter.append((self.sizeBeforeModi, self.tempId, "modify", sizeAfterModi))
+            if pair[0] == self.__tempId:
+                pair[1].setSize(sizeAfterModi, self.__tempId)
+        shapesAfter.append((self.__sizeBeforeModi, self.__tempId, "modify", sizeAfterModi))
 
     def undo(self):
         isError = False
